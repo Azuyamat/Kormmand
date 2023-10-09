@@ -31,3 +31,26 @@ kotlin {
 application {
     mainClass.set("MainKt")
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+
+            groupId = "com.azuyamat"
+            artifactId = "kormmand"
+            version = "1.0.0"
+
+            pom {
+                name.set("Kormmand")
+                description.set("Lightweight Kord command manager")
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "jitpack"
+            url = uri("https://jitpack.io")
+        }
+    }
+}
