@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.0"
     application
+    id("maven-publish")
 }
 
 group = "com.azuyamat"
