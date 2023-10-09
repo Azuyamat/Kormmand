@@ -36,6 +36,10 @@ class CommandManager(kord: Kord) {
         log("Registered command: ${command.name}")
     }
 
+    fun getCommands() : MutableMap<String, Command> {
+        return commands
+    }
+
 
     private fun registerCommandToList(name: String, command: Command) {
         commands[name] = command
