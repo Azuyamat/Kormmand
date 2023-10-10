@@ -3,6 +3,14 @@ A simple command manager for [Kord](https://github.com/kordlib/kord), a Kotlin D
     
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Azuyamat/Kormmand?style=for-the-badge)
 
+**Planned features:**
+- [x] Slash commands manager
+- [ ] Button manager
+- [ ] Select menu manager
+- [ ] Modal manager
+- [ ] Automatic help menu
+- [ ] Permission groups
+
 # Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
