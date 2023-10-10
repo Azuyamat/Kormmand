@@ -46,12 +46,12 @@ class ModalManager(kord: Kord) : Manager {
         modals[id] = modal
     }
 
-    private suspend fun handleInteraction(interaction: ModalSubmitInteractionCreateEvent) {
-        val talk = interaction.interaction
-        val id = talk.modalId.split("//")[0]
+    private suspend fun handleInteraction(event: ModalSubmitInteractionCreateEvent) {
+        val interaction = event.interaction
+        val id = interaction.modalId.split("//")[0]
 
         val modal = modals[id]
-        if (modal != null) modal.executePerm(interaction)
-        else talk.respondEphemeral { content = "Button not found" }
+        if (modal != null) modal.executePerm(event)
+        else interaction.respondEphemeral { content = "Button not found" }
     }
 }

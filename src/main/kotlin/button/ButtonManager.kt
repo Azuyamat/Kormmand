@@ -46,12 +46,12 @@ class ButtonManager(kord: Kord) : Manager {
         buttons[id] = command
     }
 
-    private suspend fun handleInteraction(interaction: ButtonInteractionCreateEvent) {
-        val talk = interaction.interaction
-        val id = talk.componentId.split("//")[0]
+    private suspend fun handleInteraction(event: ButtonInteractionCreateEvent) {
+        val interaction = event.interaction
+        val id = interaction.componentId.split("//")[0]
 
         val button = buttons[id]
-        if (button != null) button.executePerm(interaction)
-        else talk.respondEphemeral { content = "Button not found" }
+        if (button != null) button.executePerm(event)
+        else interaction.respondEphemeral { content = "Button not found" }
     }
 }
