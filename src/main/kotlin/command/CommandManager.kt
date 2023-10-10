@@ -1,10 +1,13 @@
+package command
+
+import Manager
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
-import utils.log
 
-class CommandManager(kord: Kord) {
+class CommandManager(kord: Kord) : Manager {
+    override val name = "CommandManager"
 
     private val bot = kord
     private val commands: MutableMap<String, Command> = mutableMapOf()
@@ -27,13 +30,12 @@ class CommandManager(kord: Kord) {
         val endTime = System.currentTimeMillis()
         val elapsedTime = endTime - startTimeCommand
 
-        log("Registered ${commands.size} commands (${elapsedTime}ms)")
+        logMessage("Registered ${commands.size} commands (${elapsedTime}ms)")
     }
 
     suspend fun registerCommand(command: Command){
         registerCommandToList(command.name, command)
         bot.createGlobalChatInputCommand(command.name, command.description, command.builder)
-        log("Registered command: ${command.name}")
     }
 
     fun getCommands() : MutableMap<String, Command> {
@@ -42,6 +44,7 @@ class CommandManager(kord: Kord) {
 
 
     private fun registerCommandToList(name: String, command: Command) {
+        logMessage("Registered command: $name")
         commands[name] = command
     }
 

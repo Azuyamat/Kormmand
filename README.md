@@ -4,7 +4,7 @@ A simple command manager for [Kord](https://github.com/kordlib/kord), a Kotlin D
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Azuyamat/Kormmand?style=for-the-badge)
 
 **Planned features:**
-- [x] Slash commands manager
+- [x] Slash command manager
 - [ ] Button manager
 - [ ] Select menu manager
 - [ ] Modal manager
@@ -97,12 +97,12 @@ class HelpCommand : Command {
 }
 ```
 
-### Registering commands
+### Registering command
 
 For a command to function, it must be registered by the bot at runtime. To do this, you must create a `CommandManager` and register the command.
 
 <details>
-  <summary>Multiple commands</summary>
+  <summary>Multiple command</summary>
 
 ```kotlin
 val commandManager = CommandManager()
