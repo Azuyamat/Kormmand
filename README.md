@@ -1,5 +1,7 @@
 # Kormmand
-A simple command manager for [Kord](https://github.com/kordlib/kord), a Kotlin Discord API wrapper.
+A simple `command`, `button`, `select menu` and `modal` manager for [Kord](https://github.com/kordlib/kord), a Kotlin Discord 
+API 
+wrapper.
     
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Azuyamat/Kormmand?style=for-the-badge)
 
@@ -9,6 +11,9 @@ A simple command manager for [Kord](https://github.com/kordlib/kord), a Kotlin D
 - [X] Select menu manager
 - [X] Modal manager
 - [ ] Automatic help menu
+
+## Made with love by [@azuyamat](https://azuyamat.com)
+<img src="https://azuyamat.com/api/image/heart.png" width="100" height="100" alt="Azuyamat logo">
 
 # Table of Contents
 - [Installation](#installation)
@@ -83,6 +88,8 @@ dependencies {
 
 <details>
   <summary>Commands</summary>
+
+![Command image](img/command.png)
 
 ### Creating a command
 
@@ -205,6 +212,8 @@ class HelpCommand : Command {
 <details>
   <summary>Buttons</summary>
 
+![Button image](img/button.png)
+
 ### Creating a button
 
 To create a button, start by initializing a class that extends the `Button` interface.
@@ -272,6 +281,8 @@ class HelpButton : Button {
 <details>
   <summary>Modals</summary>
 
+![Modal image](img/modal.png)
+
 ### Creating a modal
 
 To create a modal, start by initializing a class that extends the `Modal` interface.
@@ -338,6 +349,8 @@ class HelpModal : Modal {
 
 <details>
   <summary>Select Menus</summary>
+
+![Menu image](img/menu.png)
 
 ### Creating a menu
 
