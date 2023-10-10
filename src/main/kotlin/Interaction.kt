@@ -7,8 +7,11 @@ import dev.kord.core.event.interaction.SelectMenuInteractionCreateEvent
 
 interface Interaction<T : InteractionCreateEvent> {
     val id : String?
+        get() = null
     val name : String?
+        get() = null
     val description : String?
+        get() = null
     val permission : Permission
         get() = Permission.ViewChannel
 
