@@ -68,7 +68,7 @@ class CommandManager(kord: Kord) : Manager {
         if (guildId == null)
             commands[name] = command
         else
-            guildCommands[guildId]!![name] = command
+            guildCommands.getOrPut(guildId) { mutableMapOf() }[name] = command
         logMessage("Registered ${if (guildId == null) "global" else "guild"} command: $name")
     }
 
