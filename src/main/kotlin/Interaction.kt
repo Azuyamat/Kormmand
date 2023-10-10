@@ -30,7 +30,7 @@ interface Interaction<T : InteractionCreateEvent> {
         }
     }
 
-    fun execute(event: T)
+    suspend fun execute(event: T)
 
     suspend fun noPermission(event: InteractionCreateEvent){
         when (event) {
