@@ -86,6 +86,8 @@ dependencies {
 
 ## Usage
 
+> Usage is slightly outdated.
+
 <details>
   <summary>Commands</summary>
 
