@@ -18,18 +18,4 @@ class CommandManager(kord: Kord) : Manager<Command, GuildChatInputCommandInterac
             handleInteraction(this)
         }
     }
-
-    override suspend fun handleInteraction(event: GuildChatInputCommandInteractionCreateEvent) {
-        val interaction = event.interaction
-        val commandName = interaction.invokedCommandName
-
-        val command = interactions[commandName]
-        if (command != null) command.executePerm(event)
-        else {
-            val guildId = interaction.guildId.toString()
-            val guildCommand = guildInteractions[guildId]?.get(commandName)
-            if (guildCommand != null) guildCommand.executePerm(event)
-            else interaction.respondEphemeral { content = "Command not found" }
-        }
-    }
 }

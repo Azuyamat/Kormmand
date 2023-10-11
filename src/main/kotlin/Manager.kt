@@ -66,7 +66,8 @@ interface Manager<T : Interaction<*>, E: InteractionCreateEvent> {
 
     suspend fun handleInteraction(event: E) {
         val talk = event.interaction
-        val id = talk.id.toString().split("//")[0]
+        var id = talk.data.data.customId.value?:talk.data.data.name.value?:return
+        id = id.split("//")[0]
 
         val interaction = interactions[id]
         if (interaction != null) interaction.executePerm(event)
