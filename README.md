@@ -417,6 +417,13 @@ class HelpMenu : SelectMenu {
 ```
 </details>
 
+> *Note: Buttons, modals and select menus use the first part of the interaction id. This means you can split your 
+> interaction id by `//` and use the first part as the id while having the rest as interaction parameters.*
+> 
+> Example:
+> ```kotlin
+> val task = interaction.modalId.split("//")[1]
+> ```
 
 ## Contributing
 

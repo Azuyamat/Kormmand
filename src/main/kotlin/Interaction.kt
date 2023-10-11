@@ -1,10 +1,9 @@
 
 import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.interaction.respondEphemeral
-import dev.kord.core.event.interaction.ButtonInteractionCreateEvent
-import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
-import dev.kord.core.event.interaction.InteractionCreateEvent
-import dev.kord.core.event.interaction.SelectMenuInteractionCreateEvent
+import dev.kord.core.event.interaction.*
+
+annotation class InteractionClass()
 
 interface Interaction<T : InteractionCreateEvent> {
     val id : String?
@@ -16,20 +15,28 @@ interface Interaction<T : InteractionCreateEvent> {
     val permission : Permission
         get() = Permission.ViewChannel
 
-    suspend fun executePerm(event: T) {
+    suspend fun executePerm(event: InteractionCreateEvent){
         try {
-            val interaction = event.interaction
+            val e = event as T
+            val interaction = e.interaction
             val guildId = interaction.data.guildId.value
             if (guildId == null) {
-                execute(event)
+                execute(e)
                 return
             }
             val member = interaction.user.asMember(guildId)
             if (member.getPermissions().contains(permission))
-                execute(event)
+                execute(e)
             else
-                noPermission(event)
+                noPermission(e)
         } catch (e: Exception) {
+            when (event) {
+                is ChatInputCommandInteractionCreateEvent -> event.interaction.respondEphemeral { content = "Command got an error" }
+                is ButtonInteractionCreateEvent -> event.interaction.respondEphemeral { content = "Button got an error" }
+                is SelectMenuInteractionCreateEvent -> event.interaction.respondEphemeral { content = "Select got an error" }
+                is ModalSubmitInteractionCreateEvent -> event.interaction.respondEphemeral { content = "Modal got an error" }
+                else -> return
+            }
             e.printStackTrace()
         }
     }
