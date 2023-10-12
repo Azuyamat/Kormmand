@@ -9,18 +9,18 @@ import org.reflections.Reflections
 import utils.log
 import utils.cyan
 
-interface Manager<T : Interaction<*>, E: InteractionCreateEvent> {
-    val bot : Kord
-    val name : String
+interface Manager<T : Interaction<*>, E : InteractionCreateEvent> {
+    val bot: Kord
+    val name: String
 
-    val interactions : MutableMap<String, T>
-    val guildInteractions : MutableMap<String, MutableMap<String, T>>
+    val interactions: MutableMap<String, T>
+    val guildInteractions: MutableMap<String, MutableMap<String, T>>
 
-    suspend fun registerInteractions(prefix: String, guildId: String? = null){
+    suspend fun registerInteractions(prefix: String, guildId: String? = null) {
         val startTime = System.currentTimeMillis()
         val type = name.lowercase().replace("manager", "")
 
-        logMessage("Registering ${type+"s"}...")
+        logMessage("Registering ${type + "s"}...")
 
         var hasCommands = false
 
@@ -35,10 +35,10 @@ interface Manager<T : Interaction<*>, E: InteractionCreateEvent> {
         val endTime = System.currentTimeMillis()
         val elapsedTime = endTime - startTime
 
-        logMessage("Registered ${interactions.size} ${type+"s"} (${elapsedTime}ms)")
+        logMessage("Registered ${interactions.size} ${type + "s"} (${elapsedTime}ms)")
     }
 
-    private suspend fun registerCommands(){
+    private suspend fun registerCommands() {
         bot.createGlobalApplicationCommands {
             for (interaction in interactions) {
                 val command = interaction.value as Command
@@ -55,8 +55,8 @@ interface Manager<T : Interaction<*>, E: InteractionCreateEvent> {
         }
     }
 
-    private fun registerInteraction(interaction: T, guildId: String? = null){
-        val identifier : String = interaction.id?:interaction.name?:return
+    private fun registerInteraction(interaction: T, guildId: String? = null) {
+        val identifier: String = interaction.id ?: interaction.name ?: return
         if (guildId == null)
             interactions[identifier] = interaction
         else
@@ -66,7 +66,7 @@ interface Manager<T : Interaction<*>, E: InteractionCreateEvent> {
 
     suspend fun handleInteraction(event: E) {
         val talk = event.interaction
-        var id = talk.data.data.customId.value?:talk.data.data.name.value?:return
+        var id = talk.data.data.customId.value ?: talk.data.data.name.value ?: return
         id = id.split("//")[0]
 
         val interaction = interactions[id]
@@ -88,5 +88,5 @@ interface Manager<T : Interaction<*>, E: InteractionCreateEvent> {
         }
     }
 
-    fun logMessage(message : String) = log(cyan("[${name.uppercase()}] ") + message)
+    fun logMessage(message: String) = log(cyan("[${name.uppercase()}] ") + message)
 }

@@ -86,8 +86,6 @@ dependencies {
 
 ## Usage
 
-> Usage is slightly outdated.
-
 <details>
   <summary>Commands</summary>
 
@@ -96,7 +94,10 @@ dependencies {
 ### Creating a command
 
 To create a command, start by initializing a class that extends the `Command` interface.
+Don't forget to include `@CommandClass` and `@InteractionClass` annotations. Otherwise, the command won't be registered.
 ```kotlin
+@InteractionClass
+@CommandClass
 class HelpCommand : Command {
     override val name: String = "help"
     override val description: String = "Show the help menu."
@@ -108,53 +109,26 @@ class HelpCommand : Command {
 }
 ```
 
-### Registering command
+### Registering commands
 
-For a command to function, it must be registered by the bot at runtime. To do this, you must create a `CommandManager` and register the command.
+For commands to function, they must first be registered. To do this, you must create a `CommandManager` and register 
+the commands via their package name.
 
 <details>
   <summary>Multiple command</summary>
 
 #### Global commands
 ```kotlin
-val commandManager = CommandManager()
-
-commandManager.registerCommands(
-    listOf(
-        HelpCommand()
-    )
-)
+val commandManager = CommandManager(kord).apply {
+    registerInteractions("commands")
+}
 ```
 #### Guild commands
+Registering guild commands only requires that you add the guild id as a parameter.
 ```kotlin
-val commandManager = CommandManager()
-
-commandManager.registerCommands(
-    listOf(
-        HelpCommand()
-    ), "GUILDID"
-)
-```
-</details>
-
-<details>
-  <summary>Single command</summary>
-
-#### Global command
-```kotlin
-import jdk.internal.joptsimple.HelpFormatter
-
-val commandManager = CommandManager()
-
-commandManager.registerCommand(HelpCommand())
-```
-#### Guild command
-```kotlin
-import jdk.internal.joptsimple.HelpFormatter
-
-val commandManager = CommandManager()
-
-commandManager.registerCommand(HelpCommand(), "GUILDID")
+val commandManager = CommandManager(kord).apply {
+    registerInteractions("commands", "GUILDID")
+}
 ```
 </details>
 
@@ -163,11 +137,12 @@ commandManager.registerCommand(HelpCommand(), "GUILDID")
 To add permission requirements to a command, you must add the `permission` property to the command.
 
 ```kotlin
+@InteractionClass
+@CommandClass
 class HelpCommand : Command {
     override val name: String = "help"
     override val description: String = "Show the help menu."
-    override val permission: Permission
-        get() = Permission.Administrator
+    override val permission: Permission = Permission.Administrator
 
     override suspend fun execute(event: GuildChatInputCommandInteractionCreateEvent) {
         event.interaction.respondPublic {
@@ -181,11 +156,12 @@ class HelpCommand : Command {
 To add subcommands to a command, you must add the `builder` property to the command.
 
 ```kotlin
+@InteractionClass
+@CommandClass
 class HelpCommand : Command {
     override val name: String = "help"
     override val description: String = "Show the help menu."
-    override val builder: GlobalChatInputCreateBuilder.() -> Unit
-        get() = {
+    override val builder: GlobalChatInputCreateBuilder.() -> Unit = {
             subCommand("info", "Get info about a user."){
                 user("user", "The user to get info about.")
             }
@@ -219,7 +195,9 @@ class HelpCommand : Command {
 ### Creating a button
 
 To create a button, start by initializing a class that extends the `Button` interface.
+Don't forget to add the `@InteractionClass` annotation. Otherwise, the button won't be registered.
 ```kotlin
+@InteractionClass
 class HelpButton : Button {
     override val id: String = "help"
     override val name: String = "help" // Not required for buttons
@@ -232,7 +210,7 @@ class HelpButton : Button {
 }
 ```
 
-### Registering a button
+### Registering buttons
 
 For a button to function, it must be registered by the bot at runtime. To do this, you must create a `ButtonManager` 
 and register the button.
@@ -241,23 +219,21 @@ and register the button.
   <summary>Multiple buttons</summary>
 
 ```kotlin
-val buttonManager = ButtonManager()
-
-buttonManager.registerButtons(
-    listOf(
-        TicketButton()
-    )
-)
+val buttonManager = ButtonManager(kord).apply {
+    registerInteractions("buttons")
+}
 ```
 </details>
 
 <details>
-  <summary>Single button</summary>
+  <summary>Guild-specific buttons</summary>
+
+Don't know why you'd do this but you can register buttons that will only run in specific guilds
 
 ```kotlin
-val buttonManager = ButtonManager()
-
-buttonManager.registerButton(TicketButton())
+val buttonManager = ButtonManager(kord).apply {
+    registerInteractions("buttons", "GUILDID")
+}
 ```
 </details>
 
@@ -266,11 +242,11 @@ buttonManager.registerButton(TicketButton())
 To add permission requirements to a button, you must add the `permission` property to the button.
 
 ```kotlin
+@InteractionClass
 class HelpButton : Button {
     override val name: String = "help" // Not required for buttons
     override val description: String = "Show the help menu." // Not required for buttons
-    override val permission: Permission
-        get() = Permission.Administrator
+    override val permission: Permission = Permission.Administrator
 
     override suspend fun execute(event: ButtonInteractionCreateEvent) {
         event.interaction.respondPublic {
@@ -288,7 +264,9 @@ class HelpButton : Button {
 ### Creating a modal
 
 To create a modal, start by initializing a class that extends the `Modal` interface.
+Don't forget to add the `@InteractionClass` annotation. Otherwise, the modal won't be registered.
 ```kotlin
+@InteractionClass
 class HelpModal : Modal {
     override val id: String = "modal"
     override val name: String = "modal" // Not required for modals
@@ -301,32 +279,30 @@ class HelpModal : Modal {
 }
 ```
 
-### Registering a modal
+### Registering modals
 
 For a modal to function, it must be registered by the bot at runtime. To do this, you must create a `ModalManager`
-and register the modal.
+and register the modal's package.
 
 <details>
   <summary>Multiple modals</summary>
 
 ```kotlin
-val modalManager = ModalManager()
-
-modalManager.registerModals(
-    listOf(
-        HelpModal()
-    )
-)
+val modalManager = ModalManager(kord).apply {
+    registerInteractions("modals")
+}
 ```
 </details>
 
 <details>
-  <summary>Single modal</summary>
+  <summary>Guild-specific modals</summary>
+
+Don't know why you'd do this but, you can register guild-specific modals
 
 ```kotlin
-val modalManager = ModalManager()
-
-modalManager.registerModal(HelpModal())
+val modalManager = ModalManager(kord).apply {
+    registerInteractions("modals", "GUILDID")
+}
 ```
 </details>
 
@@ -335,11 +311,11 @@ modalManager.registerModal(HelpModal())
 To add permission requirements to a command, you must add the `permission` property to the modal.
 
 ```kotlin
+@InteractionClass
 class HelpModal : Modal {
     override val name: String = "help" // Not required for modals
     override val description: String = "Show the help menu." // Not required for modals
-    override val permission: Permission
-        get() = Permission.Administrator
+    override val permission: Permission = Permission.Administrator
 
     override suspend fun execute(event: ModalSubmitInteractionCreateEvent) {
         event.interaction.respondPublic {
@@ -354,10 +330,12 @@ class HelpModal : Modal {
 
 ![Menu image](img/menu.png)
 
-### Creating a menu
+### Creating a select menu
 
 To create a select menu, start by initializing a class that extends the `SelectMenu` interface.
+Don't forget to add the `@InteractionClass` annotation. Otherwise, the select menu won't be registered.
 ```kotlin
+@InteractionClass
 class HelpMenu : SelectMenu {
     override val id: String = "jeff"
     override val name: String = "jeff" // Not required for select menus
@@ -374,29 +352,27 @@ class HelpMenu : SelectMenu {
 
 For a select menu to function, it must be registered by the bot at runtime. To do this, you must create a 
 `SelectMenuManager`
-and register the select menu.
+and register the select menu's package.
 
 <details>
   <summary>Multiple select menus</summary>
 
 ```kotlin
-val selectMenuManager = SelectMenuManager()
-
-selectMenuManager.registerSelectMenus(
-    listOf(
-        HelpMenu()
-    )
-)
+val selectMenuManager = ModalManager(kord).apply {
+    registerInteractions("selectMenus")
+}
 ```
 </details>
 
 <details>
-  <summary>Single modal</summary>
+  <summary>Guild-specific select menus</summary>
+
+Once again, don't know why you'd do this but you can register guild-specific select menus
 
 ```kotlin
-val selectMenuManager = SelectMenuManager()
-
-selectMenuManager.registerSelectMenu(HelpMenu())
+val selectMenuManager = ModalManager(kord).apply {
+    registerInteractions("selectMenus", "GUILDID")
+}
 ```
 </details>
 
@@ -405,11 +381,11 @@ selectMenuManager.registerSelectMenu(HelpMenu())
 To add permission requirements to a command, you must add the `permission` property to the select menu.
 
 ```kotlin
+@InteractionClass
 class HelpMenu : SelectMenu {
     override val name: String = "help" // Not required for select menu
     override val description: String = "Show the help menu." // Not required for select menu
-    override val permission: Permission
-        get() = Permission.Administrator
+    override val permission: Permission = Permission.Administrator
 
     override suspend fun execute(event: SelectMenuInteractionCreateEvent) {
         event.interaction.respondPublic {

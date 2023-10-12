@@ -1,4 +1,3 @@
-
 import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.event.interaction.*
@@ -6,16 +5,16 @@ import dev.kord.core.event.interaction.*
 annotation class InteractionClass()
 
 interface Interaction<T : InteractionCreateEvent> {
-    val id : String?
+    val id: String?
         get() = null
-    val name : String?
+    val name: String?
         get() = null
-    val description : String?
+    val description: String?
         get() = null
-    val permission : Permission
+    val permission: Permission
         get() = Permission.ViewChannel
 
-    suspend fun executePerm(event: InteractionCreateEvent){
+    suspend fun executePerm(event: InteractionCreateEvent) {
         try {
             val e = event as T
             val interaction = e.interaction
@@ -43,7 +42,7 @@ interface Interaction<T : InteractionCreateEvent> {
 
     suspend fun execute(event: T)
 
-    suspend fun noPermission(event: InteractionCreateEvent){
+    suspend fun noPermission(event: InteractionCreateEvent) {
         when (event) {
             is GuildChatInputCommandInteractionCreateEvent -> event.interaction.respondEphemeral { content = "You don't have permission to use this command." }
             is SelectMenuInteractionCreateEvent -> event.interaction.respondEphemeral { content = "You don't have permission to use this select menu." }
