@@ -4,6 +4,13 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.20-RC'
 }
 
+dependencies {
+    implementation project(path: ':common')
+    implementation project(path: ':jda')
+    implementation project(path: ':d4j')
+    implementation project(path: ':kord')
+}
+
 allprojects {
     group 'com.azuyamat'
     version '1.0.0'
