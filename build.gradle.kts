@@ -32,6 +32,8 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "maven-publish")
+    apply(plugin = "com.github.johnrengelman.shadow")
+    apply(plugin = "kotlin")
 
     dependencies {
         testImplementation ("io.github.cdimascio:dotenv-java:3.0.0")
@@ -50,6 +52,14 @@ subprojects {
                 version = publicationVersion
 
                 from(components["java"])
+            }
+        }
+    }
+
+    tasks {
+        compileKotlin {
+            kotlinOptions {
+                jvmTarget = "1.8"
             }
         }
     }
