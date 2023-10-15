@@ -1,4 +1,5 @@
 group = 'com.azuyamat.kormmand.kord'
+version = '1.0.0'
 
 dependencies {
     implementation 'dev.kord:kord-core:0.11.1'

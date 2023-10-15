@@ -1,4 +1,5 @@
 group = 'com.azuyamat.kormmand.d4j'
+version = '1.0.0'
 
 dependencies {
     implementation 'com.discord4j:discord4j-core:3.2.5'
