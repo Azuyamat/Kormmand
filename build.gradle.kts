@@ -39,10 +39,11 @@ subprojects {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                from(components["java"])
                 groupId = "com.azuyamat.kormmand"
                 artifactId = project.name
                 version = publicationVersion
+
+                from(components["java"])
             }
         }
     }
