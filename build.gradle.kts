@@ -9,6 +9,13 @@ val publicationVersion = "1.0"
 group = "com.azuyamat.kormmand"
 version = "1.0"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
 
 allprojects {
     repositories {
@@ -25,7 +32,6 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "maven-publish")
-    apply(plugin = "com.github.johnrengelman.shadow")
 
     dependencies {
         testImplementation ("io.github.cdimascio:dotenv-java:3.0.0")
@@ -45,17 +51,6 @@ subprojects {
 
                 from(components["java"])
             }
-        }
-    }
-
-    tasks {
-        build {
-            dependsOn("shadowJar")
-        }
-
-        shadowJar {
-            if (project.name != "common") dependsOn(":common:shadowJar")
-            archiveClassifier.set("")
         }
     }
 }
