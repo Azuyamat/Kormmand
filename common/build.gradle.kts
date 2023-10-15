@@ -1,5 +1,5 @@
-group = 'com.azuyamat.kormmand.common'
-version = '1.0.0'
+group = "com.azuyamat.kormmand"
+version = "1.0.0"
 
 dependencies {
     implementation("org.reflections:reflections:0.10.2")
