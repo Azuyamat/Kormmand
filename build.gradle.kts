@@ -53,6 +53,7 @@ subprojects {
         }
 
         shadowJar {
+            if (project.name != "common") dependsOn(":common:shadowJar")
             archiveClassifier.set("")
         }
     }
