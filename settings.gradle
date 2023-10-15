@@ -10,3 +10,8 @@ plugins {
 }
 
 rootProject.name = "ZumaTick"
+include 'common'
+include 'kord'
+include 'jda'
+include 'd4j'
+
