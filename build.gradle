@@ -4,40 +4,38 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.20-RC'
 }
 
-group = 'com.azuyamat'
-version = '1.0.0'
+subprojects {
+    apply {
+        plugin 'java'
+        plugin 'org.jetbrains.kotlin.jvm'
+    }
 
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
-    implementation 'org.slf4j:slf4j-nop:2.0.9'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.9.10'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-}
-
-test {
-    useJUnitPlatform()
-}
-
-application {
-    mainClassName = 'MainKt'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = 'com.azuyamat'
-            artifactId = 'ZumaTick'
-            version = '1.0.0'
-
-            from components.java
-        }
+    dependencies {
+        implementation project(path: ':common')
+        testImplementation project(path: ':common')
     }
 }
-kotlin {
-    jvmToolchain(17)
+
+allprojects {
+    group 'com.azuyamat'
+    version '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.jetbrains.kotlin:kotlin-reflect:1.9.10'
+        testImplementation 'io.github.cdimascio:dotenv-java:3.0.0'
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    tasks.register("hello") {
+        doLast {
+            println("Hello from ${project.name}")
+        }
+    }
 }
