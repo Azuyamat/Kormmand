@@ -36,3 +36,15 @@ allprojects {
         }
     }
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.azuyamat'
+            artifactId = project.name
+            version = version
+
+            from components.java
+        }
+    }
+}
