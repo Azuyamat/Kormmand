@@ -25,6 +25,14 @@ interface Manager {
     val guildModals get() = guildInteractions["Modal"] ?: mutableMapOf()
     val guildSelectMenus get() = guildInteractions["SelectMenu"] ?: mutableMapOf()
 
+    suspend fun registerPackages(){
+        logMessage("Using ${cyan(name)}")
+        if (packages.isEmpty()) logMessage("No packages are set to be registered. If this is an error, please add packages using addPackage(<name>, [guildId])")
+        else logMessage("Ready to register ${cyan(packages.size.toString())} package(s)")
+        for (pkg in packages){
+            registerInteractions(pkg.name, pkg.guildId)
+        }
+    }
     suspend fun registerInteractions(prefix: String, guildId: String? = null) {
         val registryType = if (guildId == null) "Global" else "Guild"
         val startTime = System.currentTimeMillis()
@@ -46,9 +54,7 @@ interface Manager {
         logMessage("$registryType Registered $amt (${elapsedTime}ms)")
         registerCommands()
     }
-
     suspend fun registerCommands()
-
     private fun registerInteraction(interaction: Interaction<*>, guildId: String? = null) {
         val identifier: String = interaction::class.simpleName?.firstWord()?: throw Exception("Interaction name not found")
         val simpleName = interaction::class.java.interfaces.first().simpleName
@@ -61,12 +67,10 @@ interface Manager {
             guildInteractions.getOrPut(simpleName) { mutableMapOf() }.getOrPut(interactionGuildId) { mutableMapOf() }[identifier] = interaction
         logMessage("↳ (${cyan(simpleName.uppercase())}) Registered ${cyan(identifier)}${cyan(if (interactionGuildId != null) " to guild $interactionGuildId " else "")} from ${cyan(interaction::class.qualifiedName?:"Unknown")}")
     }
-
     suspend fun handleInteraction(event: Any)
-
     suspend fun executeInteraction(id: String, event: Any, guildId: String? = null)
-
     suspend fun executePerm(interaction: Interaction<*>, event: Any) = interaction.executePerm(event)
+    suspend fun sendMessage(event: Any, message: String) {}
 
     fun logMessage(message: String) = if (debug) log(cyan("[${name.uppercase()}] ") + message) else null
     fun disableDebug() {

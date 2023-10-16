@@ -16,7 +16,7 @@ suspend fun InteractionCreateEvent.sendMessage(text: String) = when (this) {
     else -> null
 }
 
-fun InteractionCreateEvent.getClassType() = when (this){
+fun InteractionCreateEvent.getClassType() = when (this) {
     is ChatInputCommandInteractionCreateEvent -> "Command"
     is ButtonInteractionCreateEvent -> "Button"
     is SelectMenuInteractionCreateEvent -> "SelectMenu"
@@ -41,15 +41,16 @@ fun BaseInputChatBuilder.addOption(type: KClassifier, name: String, description:
 fun ChatInputCreateBuilder.addSubcommand(name: String, description: String, other: SubCommandBuilder.() -> Unit) = subCommand(name, description, other)
 
 suspend fun KClassifier.getOptionFromClass(event: ChatInputCommandInteractionCreateEvent, param: KParameter) = when (this) {
-    String::class -> event.interaction.command.strings[param.name?:""]
-    Int::class -> event.interaction.command.integers[param.name?:""]
-    Boolean::class -> event.interaction.command.booleans[param.name?:""]
-    Member::class -> event.interaction.command.members[param.name?:""]?.asMemberOrNull()
-    Attachment::class -> event.interaction.command.attachments[param.name?:""]
-    Channel::class -> event.interaction.command.channels[param.name?:""]?.asChannel()
-    Entity::class -> event.interaction.command.mentionables[param.name?:""]
-    Role::class -> event.interaction.command.roles[param.name?:""]
-    User::class -> event.interaction.command.users[param.name?:""]
-    Double::class -> event.interaction.command.numbers[param.name?:""]
+    String::class -> event.interaction.command.strings[param.name ?: ""]
+    Int::class -> event.interaction.command.integers[param.name ?: ""]
+    Boolean::class -> event.interaction.command.booleans[param.name ?: ""]
+    Member::class -> event.interaction.command.members[param.name ?: ""]?.asMemberOrNull()
+    Attachment::class -> event.interaction.command.attachments[param.name ?: ""]
+    Channel::class -> event.interaction.command.channels[param.name ?: ""]?.asChannel()
+    Entity::class -> event.interaction.command.mentionables[param.name ?: ""]
+    Role::class -> event.interaction.command.roles[param.name ?: ""]
+    User::class -> event.interaction.command.users[param.name ?: ""]
+    Double::class -> event.interaction.command.numbers[param.name ?: ""]
+    GuildChatInputCommandInteractionCreateEvent::class -> event
     else -> null
 }
