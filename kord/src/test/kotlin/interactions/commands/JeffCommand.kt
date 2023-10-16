@@ -3,8 +3,11 @@ package interactions.commands
 import com.azuyamat.CommandClass
 import com.azuyamat.IsSubcommand
 import com.azuyamat.interactions.Command
+import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.behavior.interaction.respondEphemeral
+import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
+import dev.kord.rest.builder.message.create.actionRow
 
 @CommandClass("Jeff")
 object PoopCommand : Command {
@@ -23,6 +26,15 @@ object PoopCommand : Command {
 
     @IsSubcommand("fun")
     suspend fun user(event: GuildChatInputCommandInteractionCreateEvent) {
-        event.interaction.respondEphemeral { content = "none" }
+        event.interaction.respondEphemeral { content = "none" }.createEphemeralFollowup {
+            actionRow {
+                interactionButton(
+                    ButtonStyle.Secondary,
+                    "jeff"
+                ) {
+                    label = "Jeff"
+                }
+            }
+        }
     }
 }

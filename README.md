@@ -2,6 +2,8 @@
 A simple `command`, `button`, `select menu` and `modal` manager for [Kord](https://github.com/kordlib/kord), a Kotlin Discord 
 API 
 wrapper.
+
+> This project is no longer being maintained. Short-lived, resting in peace, awaiting its **sequel**.
     
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Azuyamat/Kormmand?style=for-the-badge)
 

@@ -37,12 +37,18 @@ interface Command : KordCommand {
                 getOtherFuns().first { it.name == subCommandName }
         }
 
+        println(function)
+
         val options = function.valueParameters.mapNotNull { it.type.classifier?.getOptionFromClass(event, it)}.toTypedArray()
+        for (option in options) {
+            println(option)
+        }
         try {
             val declareClass = if (function.isAccessible) this else getClasses().first { it.simpleName?.firstWord() == groupName }.objectInstance!!
             if (function.isSuspend) function.callSuspend(declareClass, *options)
             else function.call(declareClass, *options)
         } catch (e: Exception) {
+            println("Failed to execute command: ${e.message}")
             e.printStackTrace()
         }
     }
